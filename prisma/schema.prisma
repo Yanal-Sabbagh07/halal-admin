@@ -48,3 +48,4 @@ model Category {
   @@index([storeId])
   @@index([billboardId])
 }
+
