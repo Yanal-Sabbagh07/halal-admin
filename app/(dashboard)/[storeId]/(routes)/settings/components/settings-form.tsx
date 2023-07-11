@@ -31,6 +31,7 @@ interface SettingsFormProps {
 }
 const formSchema = z.object({
   name: z.string().min(3),
+  type: z.string().min(3),
 });
 
 type SettingsFormValues = z.infer<typeof formSchema>;
@@ -107,6 +108,23 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={loading}
+                      placeholder="Store name"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="type"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Type</FormLabel>
                   <FormControl>
                     <Input
                       disabled={loading}

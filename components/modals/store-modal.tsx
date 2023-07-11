@@ -22,6 +22,7 @@ import { Button } from "@/components/ui/button";
 
 const formSchema = z.object({
   name: z.string().min(3),
+  type: z.string().min(3),
 });
 
 export const StoreModal = () => {
@@ -68,6 +69,23 @@ export const StoreModal = () => {
                       <Input
                         disabled={loading}
                         placeholder="E-Commerce"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="type"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Type</FormLabel>
+                    <FormControl>
+                      <Input
+                        disabled={loading}
+                        placeholder="Store Type"
                         {...field}
                       />
                     </FormControl>
