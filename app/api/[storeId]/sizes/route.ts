@@ -33,7 +33,7 @@ export async function POST(
     const storeByUserId = await prismadb.store.findFirst({
       where: {
         id: params.storeId,
-        userId,
+        adminId: userId,
       },
     });
 

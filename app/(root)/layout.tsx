@@ -9,7 +9,7 @@ const SetupLayout = async ({ children }: { children: React.ReactNode }) => {
   }
   const store = await prismadb.store.findFirst({
     where: {
-      userId: userId,
+      adminId: userId,
     },
   });
   if (store) {

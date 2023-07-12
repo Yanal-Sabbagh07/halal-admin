@@ -18,7 +18,7 @@ const DashboardLayout = async ({
   const store = await prismadb.store.findFirst({
     where: {
       id: params.storeId,
-      userId: userId, // shorthand ==> userId
+      adminId: userId,
     },
   });
   if (!store) {
@@ -26,7 +26,6 @@ const DashboardLayout = async ({
   } else {
     return (
       <div>
-        {/* <h1>Navigation Bar</h1> */}
         <Navbar />
         {children}
       </div>

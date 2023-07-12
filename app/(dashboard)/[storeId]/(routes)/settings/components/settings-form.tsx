@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookForm/resolvers/zod";
 import { Store } from "@prisma/client";
+import { Owner } from "@prisma/client";
 import { Trash } from "lucide-react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
@@ -20,6 +21,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { AlertModal } from "@/components/modals/alert-modal";
@@ -28,15 +36,17 @@ import useOrigin from "@/hooks/use-origin";
 
 interface SettingsFormProps {
   initialData: Store;
+  owner: Owner[];
 }
 const formSchema = z.object({
   name: z.string().min(3),
   type: z.string().min(3),
+  ownerId: z.string().min(3),
 });
 
 type SettingsFormValues = z.infer<typeof formSchema>;
 
-const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
+const SettingsForm: React.FC<SettingsFormProps> = ({ initialData, owner }) => {
   const params = useParams();
   const router = useRouter();
   const origin = useOrigin();
@@ -128,10 +138,42 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
                   <FormControl>
                     <Input
                       disabled={loading}
-                      placeholder="Store name"
+                      placeholder="Store Type"
                       {...field}
                     />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="ownerId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Owner</FormLabel>
+                  <Select
+                    disabled={loading}
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          defaultValue={field.value}
+                          placeholder="Select a category"
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {owner.map((owner) => (
+                        <SelectItem key={owner.id} value={owner.id}>
+                          {owner.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}

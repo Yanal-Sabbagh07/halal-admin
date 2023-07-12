@@ -13,7 +13,7 @@ export async function PATCH(
       return new NextResponse("Unauthenticated", { status: 401 });
     }
     const body = await req.json();
-    const { name } = body;
+    const { name, type, ownerId } = body;
 
     if (!name) {
       return new NextResponse("Name is required", { status: 400 });
@@ -26,10 +26,12 @@ export async function PATCH(
     const store = await prismadb.store.updateMany({
       where: {
         id: params.storeId,
-        userId: userId,
+        adminId: userId,
       },
       data: {
         name: name,
+        type: type,
+        ownerId: ownerId,
       },
     });
     return NextResponse.json(store);
@@ -58,7 +60,7 @@ export async function DELETE(
     const store = await prismadb.store.deleteMany({
       where: {
         id: params.storeId,
-        userId: userId,
+        adminId: userId,
       },
     });
     return NextResponse.json(store);
