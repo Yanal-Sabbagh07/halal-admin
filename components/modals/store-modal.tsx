@@ -18,27 +18,26 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 const formSchema = z.object({
   name: z.string().min(3),
   type: z.string().min(3),
-  ownerId: z.string().min(3),
 });
 
-interface StoreModalProps {
-  owners: Owner[];
-}
+// interface StoreModalProps {
+//   owners: Owner[];
+// }
 
-export const StoreModal: React.FC<StoreModalProps> = ({ owners }) => {
+export const StoreModal = () => {
   const StoreModal = useStoreModal();
 
   const [loading, setLoading] = useState(false);
@@ -47,6 +46,7 @@ export const StoreModal: React.FC<StoreModalProps> = ({ owners }) => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
+      type: "",
     },
   });
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -108,38 +108,6 @@ export const StoreModal: React.FC<StoreModalProps> = ({ owners }) => {
                 )}
               />
 
-              <FormField
-                control={form.control}
-                name="ownerId"
-                render={({ field }) => (
-                  <FormItem className="pt-4">
-                    <FormLabel>Owner</FormLabel>
-                    <Select
-                      disabled={loading}
-                      onValueChange={field.onChange}
-                      value={field.value}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue
-                            defaultValue={field.value}
-                            placeholder="Select a category"
-                          />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {owners.map((owner) => (
-                          <SelectItem key={owner.id} value={owner.id}>
-                            {owner.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
               <div className="pt-6 space-x-2 flex items-center justify-end w-full">
                 <Button
                   variant="outline"

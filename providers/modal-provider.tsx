@@ -1,15 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Owner } from "@prisma/client";
+// import { Owner } from "@prisma/client";
 
 import { StoreModal } from "@/components/modals/store-modal";
 
-interface ModalProviderProps {
-  owners: Owner[];
-}
+// interface ModalProviderProps {
+//   owners: Owner[];
+// }
 
-export const ModalProvider: React.FC<ModalProviderProps> = ({ owners }) => {
+export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export const ModalProvider: React.FC<ModalProviderProps> = ({ owners }) => {
   }
   return (
     <>
-      <StoreModal owners={owners} />
+      <StoreModal />
     </>
   );
 };

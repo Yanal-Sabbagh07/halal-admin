@@ -36,17 +36,17 @@ import useOrigin from "@/hooks/use-origin";
 
 interface SettingsFormProps {
   initialData: Store;
-  owner: Owner[];
+  // owner: Owner[];
 }
 const formSchema = z.object({
   name: z.string().min(3),
   type: z.string().min(3),
-  ownerId: z.string().min(3),
+  // ownerId: z.string().min(3),
 });
 
 type SettingsFormValues = z.infer<typeof formSchema>;
 
-const SettingsForm: React.FC<SettingsFormProps> = ({ initialData, owner }) => {
+const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
   const params = useParams();
   const router = useRouter();
   const origin = useOrigin();
@@ -146,7 +146,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ initialData, owner }) => {
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="ownerId"
               render={({ field }) => (
@@ -177,7 +177,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ initialData, owner }) => {
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
           </div>
           <Button disabled={loading} className="ml-auto" type="submit">
             Save changes
