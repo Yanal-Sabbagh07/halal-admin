@@ -11,17 +11,34 @@ datasource db {
   relationMode = "prisma"
 }
 
+enum UserRole { 
+  admin
+  owner 
+  user
+}
+
+model User { 
+  id String @id @default(uuid())
+  name String
+  email String
+  password String
+  image String?
+
+  role UserRole @default(owner)
+}
+
 model Owner { 
   id String @id @default(uuid())
   name String
   phone String
   email String
   Password String 
-  storeId String @unique
+  storeId String 
   store Store @relation(fields: [storeId], references: [id])
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  @@index([storeId])
 }
 
 model Store { 
@@ -30,7 +47,7 @@ model Store {
   adminId     String
   type        String
   
-  owner       Owner? 
+  owner       Owner[]
   billboards  Billboard[] @relation("storeToBillboard")
   categories  Category[]  @relation("StoreToCategory")
   products    Product[]  @relation("StoreToProduct")

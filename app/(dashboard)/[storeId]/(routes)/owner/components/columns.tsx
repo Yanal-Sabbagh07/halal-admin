@@ -10,6 +10,7 @@ export type OwnerColumn = {
   email: string;
   password: string;
   phone: string;
+  createdAt: Date;
 };
 
 export const columns: ColumnDef<OwnerColumn>[] = [

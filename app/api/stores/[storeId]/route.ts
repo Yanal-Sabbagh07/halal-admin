@@ -13,7 +13,7 @@ export async function PATCH(
       return new NextResponse("Unauthenticated", { status: 401 });
     }
     const body = await req.json();
-    const { name, type, ownerId } = body;
+    const { name, type } = body;
 
     if (!name) {
       return new NextResponse("Name is required", { status: 400 });
@@ -31,7 +31,6 @@ export async function PATCH(
       data: {
         name: name,
         type: type,
-        ownerId: ownerId,
       },
     });
     return NextResponse.json(store);

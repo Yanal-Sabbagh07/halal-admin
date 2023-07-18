@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
-
+import * as bcrypt from "bcrypt";
 import prismadb from "@/lib/prismadb";
 
 export async function POST(
@@ -44,17 +44,18 @@ export async function POST(
       return new NextResponse("Unauthorized", { status: 405 });
     }
 
-    const size = await prismadb.owner.create({
+    const owner = await prismadb.owner.create({
       data: {
         name,
         email,
-        Password: password,
+        Password: await bcrypt.hash(password, 10),
         phone,
         storeId: params.storeId,
       },
     });
-
-    return NextResponse.json(size);
+    const { Password, ...result } = owner;
+    console.log(result);
+    return NextResponse.json(result);
   } catch (error) {
     console.log("[Owner_POST]", error);
     return new NextResponse("Internal error", { status: 500 });
@@ -75,7 +76,6 @@ export async function GET(
         storeId: params.storeId,
       },
     });
-
     return NextResponse.json(owners);
   } catch (error) {
     console.log("[Owner_GET]", error);

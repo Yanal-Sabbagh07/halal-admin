@@ -16,6 +16,7 @@ const OwnersPage = async ({ params }: { params: { storeId: string } }) => {
     email: owner.email,
     password: owner.Password,
     phone: owner.phone,
+    createdAt: owner.createdAt,
   }));
 
   return (

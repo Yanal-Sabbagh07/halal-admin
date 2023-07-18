@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import * as bcrypt from "bcrypt";
 
 import prismadb from "@/lib/prismadb";
 import { auth } from "@clerk/nextjs";
@@ -115,7 +116,7 @@ export async function PATCH(
       data: {
         name,
         email,
-        Password: password,
+        Password: await bcrypt.hash(password, 10),
         phone,
       },
     });
