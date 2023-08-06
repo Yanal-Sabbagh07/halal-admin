@@ -1,10 +1,12 @@
 import "./globals.css";
 
 import { Inter } from "next/font/google";
-import { ClerkProvider } from "@clerk/nextjs";
+
+import AuthProvider from "@/providers/AuthProvider";
 
 import { ModalProvider } from "@/providers/modal-provider";
 import { ToasterProvider } from "@/providers/toast-provider";
+
 // import prismadb from "@/lib/prismadb";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -19,16 +21,15 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // const owners = await prismadb.owner.findMany();
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body className={inter.className}>
+    <html lang="en">
+      <body className={inter.className}>
+        <AuthProvider>
           <ToasterProvider />
           <ModalProvider />
           {children}
-        </body>
-      </html>
-    </ClerkProvider>
+        </AuthProvider>
+      </body>
+    </html>
   );
 }

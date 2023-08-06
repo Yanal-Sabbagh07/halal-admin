@@ -8,7 +8,7 @@ export type OwnerColumn = {
   id: string;
   name: string;
   email: string;
-  password: string;
+  role: string;
   phone: string;
   createdAt: Date;
 };
@@ -23,16 +23,12 @@ export const columns: ColumnDef<OwnerColumn>[] = [
     header: "Email",
   },
   {
-    accessorKey: "password",
-    header: "Password",
-  },
-  {
     accessorKey: "phone",
     header: "Phone",
   },
   {
-    accessorKey: "createdAt",
-    header: "Date",
+    accessorKey: "role",
+    header: "Role",
   },
   {
     id: "actions",

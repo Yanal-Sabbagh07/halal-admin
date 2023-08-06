@@ -4,7 +4,7 @@ import { OwnerColumn } from "./components/columns";
 import { OwnersClient } from "./components/client";
 
 const OwnersPage = async ({ params }: { params: { storeId: string } }) => {
-  const owners = await prismadb.owner.findMany({
+  const owners = await prismadb.user.findMany({
     where: {
       storeId: params.storeId,
     },
@@ -14,8 +14,9 @@ const OwnersPage = async ({ params }: { params: { storeId: string } }) => {
     id: owner.id,
     name: owner.name,
     email: owner.email,
-    password: owner.Password,
     phone: owner.phone,
+    image: owner.image,
+    role: owner.role,
     createdAt: owner.createdAt,
   }));
 

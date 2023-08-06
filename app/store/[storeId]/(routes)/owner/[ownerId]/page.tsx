@@ -3,7 +3,7 @@ import prismadb from "@/lib/prismadb";
 import { OwnerForm } from "./components/owner-form";
 
 const OwnerPage = async ({ params }: { params: { ownerId: string } }) => {
-  const owner = await prismadb.owner.findUnique({
+  const owner = await prismadb.user.findUnique({
     where: {
       id: params.ownerId,
     },

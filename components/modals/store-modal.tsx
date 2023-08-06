@@ -7,7 +7,6 @@ import { zodResolver } from "@hookForm/resolvers/zod";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 
-import { Owner } from "@prisma/client";
 import { useStoreModal } from "@/hooks/use-store-modal";
 import { Modal } from "@/components/ui/modal";
 import {
@@ -54,7 +53,7 @@ export const StoreModal = () => {
       setLoading(true);
       // attempt to create a new store
       const res = await axios.post("/api/stores", values); // holds the newly created store id
-      window.location.assign(`/${res.data.id}`); // will completly refresh out page that insure store is created in DB...
+      window.location.assign(`/store/${res.data.id}`); // will completly refresh out page that insure store is created in DB...
     } catch (error) {
       toast.error("Something went wrong!");
     } finally {

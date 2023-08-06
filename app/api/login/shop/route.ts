@@ -11,19 +11,17 @@ export async function POST(request: Request) {
   const body: RequestBody = await request.json();
   const { username, password } = body;
 
-  const user = await prismadb.owner.findFirst({
+  const user = await prismadb.user.findFirst({
     where: {
       email: username,
     },
   });
 
   if (!user) {
-    return new Response(JSON.stringify("Email is not Registered!"));
+    throw new Error(JSON.stringify("user doesn't Exist"));
   }
 
-  if (user && (await bcrypt.compare(password, user.Password))) {
-    const { Password, ...result } = user;
-    console.log(result);
-    return new Response(JSON.stringify(result));
-  } else return new Response(JSON.stringify("Password is not correct!"));
+  if (user && password === user.password) {
+    return new Response(JSON.stringify(user));
+  } else throw new Error("Password isn't correct");
 }

@@ -8,7 +8,7 @@ import { zodResolver } from "@hookForm/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { Trash } from "lucide-react";
-import { Owner } from "@prisma/client";
+import { User } from "@prisma/client";
 import { useParams, useRouter } from "next/navigation";
 
 import { Input } from "@/components/ui/input";
@@ -30,12 +30,13 @@ const formSchema = z.object({
   email: z.string(),
   password: z.string(),
   phone: z.string(),
+  role: z.string(),
 });
 
 type SizeFormValues = z.infer<typeof formSchema>;
 
 interface SizeFormProps {
-  initialData: Owner | null;
+  initialData: User | null;
 }
 
 export const OwnerForm: React.FC<SizeFormProps> = ({ initialData }) => {
@@ -182,6 +183,23 @@ export const OwnerForm: React.FC<SizeFormProps> = ({ initialData }) => {
                     <Input
                       disabled={loading}
                       placeholder="Owner Phone"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="role"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Role</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={loading}
+                      placeholder="User Role"
                       {...field}
                     />
                   </FormControl>

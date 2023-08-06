@@ -22,23 +22,21 @@ model User {
   name String
   email String
   password String
-  image String?
-
-  role UserRole @default(owner)
-}
-
-model Owner { 
-  id String @id @default(uuid())
-  name String
   phone String
-  email String
-  Password String 
-  storeId String 
-  store Store @relation(fields: [storeId], references: [id])
-
+  storeId String
+  image String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  role UserRole @default(owner)
+  store Store @relation(fields: [storeId], references: [id])
   @@index([storeId])
+}
+
+model Mall { 
+  id          String  @id @default("27071990")
+  name        String
+  store       Store[] @relation("MallToStore")
 }
 
 model Store { 
@@ -46,8 +44,10 @@ model Store {
   name        String
   adminId     String
   type        String
+  mallId      String @default("27071990")
+  mall        Mall @relation("MallToStore", fields: [mallId], references: [id])
   
-  owner       Owner[]
+  user        User[]
   billboards  Billboard[] @relation("storeToBillboard")
   categories  Category[]  @relation("StoreToCategory")
   products    Product[]  @relation("StoreToProduct")
@@ -56,6 +56,8 @@ model Store {
   orders      Order[]     @relation("StoreToOrder")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  @@index([mallId])
 }
 
 

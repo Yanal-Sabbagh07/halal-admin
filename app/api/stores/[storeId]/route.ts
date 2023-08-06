@@ -1,14 +1,16 @@
-import { auth } from "@clerk/nextjs";
+import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import prismadb from "@/lib/prismadb";
+import { options } from "../../auth/[...nextauth]/options";
 
 // Update Store
 export async function PATCH(
   req: Request,
   { params }: { params: { storeId: string } }
 ) {
+  const session = await getServerSession(options);
   try {
-    const { userId } = auth();
+    const userId = session?.user.id;
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 401 });
     }
@@ -46,8 +48,10 @@ export async function DELETE(
   _req: Request, // first parameter we should keep it even if it's unused
   { params }: { params: { storeId: string } }
 ) {
+  const session = await getServerSession(options);
+
   try {
-    const { userId } = auth();
+    const userId = session?.user.id;
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 401 });
     }

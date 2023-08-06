@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import * as bcrypt from "bcrypt";
 
 import prismadb from "@/lib/prismadb";
-import { auth } from "@clerk/nextjs";
+// import { auth } from "@clerk/nextjs";
 
 export async function GET(
   req: Request,
@@ -13,7 +13,7 @@ export async function GET(
       return new NextResponse("Owner id is required", { status: 400 });
     }
 
-    const owner = await prismadb.owner.findUnique({
+    const owner = await prismadb.user.findUnique({
       where: {
         id: params.ownerId,
       },
@@ -31,7 +31,7 @@ export async function DELETE(
   { params }: { params: { ownerId: string; storeId: string } }
 ) {
   try {
-    const { userId } = auth();
+    const userId = "001";
 
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 403 });
@@ -52,7 +52,7 @@ export async function DELETE(
       return new NextResponse("Unauthorized", { status: 405 });
     }
 
-    const owner = await prismadb.owner.delete({
+    const owner = await prismadb.user.delete({
       where: {
         id: params.ownerId,
       },
@@ -70,11 +70,11 @@ export async function PATCH(
   { params }: { params: { ownerId: string; storeId: string } }
 ) {
   try {
-    const { userId } = auth();
+    const userId = "001";
 
     const body = await req.json();
 
-    const { name, email, password, phone } = body;
+    const { name, email, password, phone, role } = body;
 
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 403 });
@@ -93,6 +93,9 @@ export async function PATCH(
     if (!phone) {
       return new NextResponse("Phone is required", { status: 400 });
     }
+    if (!role) {
+      return new NextResponse("Role is required", { status: 400 });
+    }
 
     if (!params.ownerId) {
       return new NextResponse("Owner id is required", { status: 400 });
@@ -109,15 +112,16 @@ export async function PATCH(
       return new NextResponse("Unauthorized", { status: 405 });
     }
 
-    const owner = await prismadb.owner.update({
+    const owner = await prismadb.user.update({
       where: {
         id: params.ownerId,
       },
       data: {
         name,
         email,
-        Password: await bcrypt.hash(password, 10),
+        password: await bcrypt.hash(password, 10),
         phone,
+        role,
       },
     });
 

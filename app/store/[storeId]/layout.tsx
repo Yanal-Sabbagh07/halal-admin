@@ -1,8 +1,10 @@
-import { auth } from "@clerk/nextjs";
+// import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
 
 import Navbar from "@/components/navbar";
 import prismadb from "@/lib/prismadb";
+import { options } from "@/app/api/auth/[...nextauth]/options";
 
 const DashboardLayout = async ({
   children,
@@ -11,14 +13,14 @@ const DashboardLayout = async ({
   children: React.ReactNode;
   params: { storeId: string };
 }) => {
-  const { userId } = auth();
-  if (!userId) {
-    redirect("/sign-in");
+  const session = await getServerSession(options);
+
+  if (!session) {
+    redirect("/login");
   }
   const store = await prismadb.store.findFirst({
     where: {
       id: params.storeId,
-      adminId: userId,
     },
   });
   if (!store) {

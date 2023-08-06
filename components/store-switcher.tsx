@@ -26,6 +26,7 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
+import { useSession } from "next-auth/react";
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
   typeof PopoverTrigger
@@ -39,6 +40,7 @@ const StoreSWitcher = ({ className, items = [] }: StoreSWitcherProps) => {
   const storeModel = useStoreModal();
   const params = useParams();
   const router = useRouter();
+  const session = useSession();
 
   const formatedItems = items.map((item) => ({
     label: item.name,
@@ -53,7 +55,7 @@ const StoreSWitcher = ({ className, items = [] }: StoreSWitcherProps) => {
   const [open, setOpen] = useState(false);
   const onStoreSelect = (store: { value: string; label: string }) => {
     setOpen(false);
-    router.push(`/${store.value}`);
+    router.push(`/store/${store.value}`);
   };
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -98,19 +100,21 @@ const StoreSWitcher = ({ className, items = [] }: StoreSWitcherProps) => {
             </CommandGroup>
           </CommandList>
           <CommandSeparator />
-          <CommandList>
-            <CommandGroup>
-              <CommandItem
-                onSelect={() => {
-                  setOpen(false);
-                  storeModel.onOpen();
-                }}
-              >
-                <PlusCircle className="mr-2 h-5 w-5 " />
-                Create Store
-              </CommandItem>
-            </CommandGroup>
-          </CommandList>
+          {session.data?.user.role === "admin" && (
+            <CommandList>
+              <CommandGroup>
+                <CommandItem
+                  onSelect={() => {
+                    setOpen(false);
+                    storeModel.onOpen();
+                  }}
+                >
+                  <PlusCircle className="mr-2 h-5 w-5 " />
+                  Create Store
+                </CommandItem>
+              </CommandGroup>
+            </CommandList>
+          )}
         </Command>
       </PopoverContent>
     </Popover>
