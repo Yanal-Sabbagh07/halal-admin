@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs";
+import { getServerSession } from "next-auth";
 
+import { options } from "@/app/api/auth/[...nextauth]/options";
 import prismadb from "@/lib/prismadb";
 
 export async function GET(
@@ -36,9 +37,9 @@ export async function DELETE(
   { params }: { params: { productId: string; storeId: string } }
 ) {
   try {
-    const { userId } = auth();
+    const session = await getServerSession(options);
 
-    if (!userId) {
+    if (session?.user.role !== "admin") {
       return new NextResponse("Unauthenticated", { status: 403 });
     }
 
@@ -49,7 +50,7 @@ export async function DELETE(
     const storeByUserId = await prismadb.store.findFirst({
       where: {
         id: params.storeId,
-        adminId: userId,
+        adminId: session.user.id,
       },
     });
 
@@ -75,7 +76,7 @@ export async function PATCH(
   { params }: { params: { productId: string; storeId: string } }
 ) {
   try {
-    const { userId } = auth();
+    const session = await getServerSession(options);
 
     const body = await req.json();
 
@@ -90,7 +91,7 @@ export async function PATCH(
       isArchived,
     } = body;
 
-    if (!userId) {
+    if (session?.user.role !== "admin") {
       return new NextResponse("Unauthenticated", { status: 403 });
     }
 
@@ -125,7 +126,7 @@ export async function PATCH(
     const storeByUserId = await prismadb.store.findFirst({
       where: {
         id: params.storeId,
-        adminId: userId,
+        adminId: session.user.id,
       },
     });
 

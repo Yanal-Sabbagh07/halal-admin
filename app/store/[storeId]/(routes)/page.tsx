@@ -21,6 +21,7 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({ params }) => {
         Active Store: <span className="text-blue-600">{store?.name}</span>
       </h2>
       <h3>Owner is : {session?.user.name} </h3>
+      <h4>ID is : {params.storeId}</h4>
     </div>
   );
 };

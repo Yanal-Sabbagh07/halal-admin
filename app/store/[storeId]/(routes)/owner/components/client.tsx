@@ -26,7 +26,9 @@ export const OwnersClient: React.FC<OwnersClientProps> = ({ data }) => {
           title={`Owners (${data.length})`}
           description="Manage Owners for your Stores"
         />
-        <Button onClick={() => router.push(`/${params.storeId}/owner/new`)}>
+        <Button
+          onClick={() => router.push(`/store/${params.storeId}/owner/new`)}
+        >
           <Plus className="mr-2 h-4 w-4" /> Add New
         </Button>
       </div>

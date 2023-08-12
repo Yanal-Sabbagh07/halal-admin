@@ -70,7 +70,7 @@ export const OwnerForm: React.FC<SizeFormProps> = ({ initialData }) => {
         await axios.post(`/api/${params.storeId}/owners`, data);
       }
       router.refresh();
-      router.push(`/${params.storeId}/owner`);
+      router.push(`/store/${params.storeId}/owner`);
       toast.success(toastMessage);
     } catch (error: any) {
       toast.error("Something went wrong.");
